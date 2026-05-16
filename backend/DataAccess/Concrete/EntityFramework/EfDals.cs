@@ -9,6 +9,7 @@ namespace DataAccess.Concrete.EntityFramework
     public class EfLessonDal : EfEntityRepositoryBase<Lesson, HafizlikTakipContext>, ILessonDal { }
     public class EfMistakeDal : EfEntityRepositoryBase<Mistake, HafizlikTakipContext>, IMistakeDal { }
     public class EfHomeworkDal : EfEntityRepositoryBase<Homework, HafizlikTakipContext>, IHomeworkDal { }
+    public class EfEtutNoteDal : EfEntityRepositoryBase<EtutNote, HafizlikTakipContext>, IEtutNoteDal { }
     public class EfAttendanceDal : EfEntityRepositoryBase<Attendance, HafizlikTakipContext>, IAttendanceDal { }
     public class EfDutyScheduleConstraintDal : EfEntityRepositoryBase<DutyScheduleConstraint, HafizlikTakipContext>, IDutyScheduleConstraintDal { }
     public class EfDutyScheduleWeekDal : EfEntityRepositoryBase<DutyScheduleWeek, HafizlikTakipContext>, IDutyScheduleWeekDal { }

@@ -18,6 +18,14 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<AuthManager>().As<IAuthService>().SingleInstance();
             builder.RegisterType<UserManager>().As<IUserService>().SingleInstance();
             builder.RegisterType<StudentManager>().As<IStudentService>().SingleInstance();
+            builder.RegisterType<ClassManager>().As<IClassService>().SingleInstance();
+            builder.RegisterType<LessonManager>().As<ILessonService>().SingleInstance();
+            builder.RegisterType<MistakeManager>().As<IMistakeService>().SingleInstance();
+            builder.RegisterType<HomeworkManager>().As<IHomeworkService>().SingleInstance();
+            builder.RegisterType<AttendanceManager>().As<IAttendanceService>().SingleInstance();
+            builder.RegisterType<EtutNoteManager>().As<IEtutNoteService>().SingleInstance();
+            builder.RegisterType<DutyScheduleManager>().As<IDutyScheduleService>().SingleInstance();
+            builder.RegisterType<TeacherStudentManager>().As<ITeacherStudentService>().SingleInstance();
 
             // DALs
             builder.RegisterType<EfUserDal>().As<IUserDal>().SingleInstance();
@@ -26,6 +34,7 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<EfLessonDal>().As<ILessonDal>().SingleInstance();
             builder.RegisterType<EfMistakeDal>().As<IMistakeDal>().SingleInstance();
             builder.RegisterType<EfHomeworkDal>().As<IHomeworkDal>().SingleInstance();
+            builder.RegisterType<EfEtutNoteDal>().As<IEtutNoteDal>().SingleInstance();
             builder.RegisterType<EfAttendanceDal>().As<IAttendanceDal>().SingleInstance();
             builder.RegisterType<EfDutyScheduleConstraintDal>().As<IDutyScheduleConstraintDal>().SingleInstance();
             builder.RegisterType<EfDutyScheduleWeekDal>().As<IDutyScheduleWeekDal>().SingleInstance();
