@@ -2,7 +2,7 @@ using Core.Entities;
 
 namespace Entities.Concrete
 {
-    public class Student : IEntity
+    public class Student : IEntity, IHasTenant
     {
         public int Id { get; set; }
         public int TenantId { get; set; }

@@ -13,6 +13,7 @@ namespace Core.DependencyResolvers
             serviceCollection.AddMemoryCache();
             serviceCollection.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             serviceCollection.AddSingleton<ICacheManager, MemoryCacheManager>();
+            serviceCollection.AddScoped<Core.Utilities.Tenant.ITenantService, Core.Utilities.Tenant.TenantService>();
         }
     }
 }

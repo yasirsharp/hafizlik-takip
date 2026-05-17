@@ -2,7 +2,7 @@ using Core.Entities;
 
 namespace Entities.Concrete
 {
-    public class VideoRecord : IEntity
+    public class VideoRecord : IEntity, IHasTenant
     {
         public int Id { get; set; }
         public int TenantId { get; set; }

@@ -32,5 +32,50 @@ namespace DataAccess.Concrete.EntityFramework
         {
             optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=HafizlikTakipDb;Username=postgres;Password=postgres");
         }
+
+        private int CurrentTenantId => Core.Utilities.Tenant.TenantResolver.GetCurrentTenantId();
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Global Query Filters (TenantId = 0 means system/admin, sees all)
+            modelBuilder.Entity<Student>().HasQueryFilter(e => CurrentTenantId == 0 || e.TenantId == CurrentTenantId);
+            modelBuilder.Entity<Class>().HasQueryFilter(e => CurrentTenantId == 0 || e.TenantId == CurrentTenantId);
+            modelBuilder.Entity<Lesson>().HasQueryFilter(e => CurrentTenantId == 0 || e.TenantId == CurrentTenantId);
+            modelBuilder.Entity<Mistake>().HasQueryFilter(e => CurrentTenantId == 0 || e.TenantId == CurrentTenantId);
+            modelBuilder.Entity<Homework>().HasQueryFilter(e => CurrentTenantId == 0 || e.TenantId == CurrentTenantId);
+            modelBuilder.Entity<EtutNote>().HasQueryFilter(e => CurrentTenantId == 0 || e.TenantId == CurrentTenantId);
+            modelBuilder.Entity<Attendance>().HasQueryFilter(e => CurrentTenantId == 0 || e.TenantId == CurrentTenantId);
+            modelBuilder.Entity<VideoRecord>().HasQueryFilter(e => CurrentTenantId == 0 || e.TenantId == CurrentTenantId);
+            modelBuilder.Entity<DutyScheduleConstraint>().HasQueryFilter(e => CurrentTenantId == 0 || e.TenantId == CurrentTenantId);
+            modelBuilder.Entity<DutyScheduleWeek>().HasQueryFilter(e => CurrentTenantId == 0 || e.TenantId == CurrentTenantId);
+            modelBuilder.Entity<TeacherStudentAssignment>().HasQueryFilter(e => CurrentTenantId == 0 || e.TenantId == CurrentTenantId);
+        }
+
+        public override int SaveChanges()
+        {
+            SetTenantIdOnAddedEntities();
+            return base.SaveChanges();
+        }
+
+        private void SetTenantIdOnAddedEntities()
+        {
+            var tenantId = CurrentTenantId;
+            if (tenantId > 0)
+            {
+                var addedEntities = ChangeTracker.Entries()
+                    .Where(e => e.State == EntityState.Added && e.Entity is Core.Entities.IHasTenant);
+
+                foreach (var entry in addedEntities)
+                {
+                    var entity = (Core.Entities.IHasTenant)entry.Entity;
+                    if (entity.TenantId == 0) // Eger manuel set edilmediyse, gecerli tenanti ata
+                    {
+                        entity.TenantId = tenantId;
+                    }
+                }
+            }
+        }
     }
 }

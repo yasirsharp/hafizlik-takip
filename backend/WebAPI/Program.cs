@@ -67,6 +67,7 @@ if (app.Environment.IsDevelopment())
 app.UseCors("AllowAll");
 app.UseMiddleware<WebAPI.Middleware.ExceptionMiddleware>();
 app.UseAuthentication();
+app.UseMiddleware<WebAPI.Middleware.TenantResolverMiddleware>();
 app.UseAuthorization();
 app.MapControllers();
 
