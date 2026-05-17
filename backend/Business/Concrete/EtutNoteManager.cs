@@ -1,3 +1,5 @@
+using Core.Aspects.Autofac.Validation;
+using Business.ValidationRules.FluentValidation;
 using Business.Abstract;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -30,6 +32,7 @@ namespace Business.Concrete
                 _etutNoteDal.GetAll(e => e.ToTeacherUserId == teacherUserId && !e.IsRead));
         }
 
+        [ValidationAspect(typeof(EtutNoteValidator))]
         public IResult Add(EtutNote etutNote)
         {
             _etutNoteDal.Add(etutNote);

@@ -1,3 +1,5 @@
+using Core.Aspects.Autofac.Validation;
+using Business.ValidationRules.FluentValidation;
 using Business.Abstract;
 using Business.Constants;
 using Core.Utilities.Results;
@@ -30,12 +32,14 @@ namespace Business.Concrete
             return new SuccessDataResult<Homework>(_homeworkDal.Get(h => h.Id == id));
         }
 
+        [ValidationAspect(typeof(HomeworkValidator))]
         public IResult Add(Homework homework)
         {
             _homeworkDal.Add(homework);
             return new SuccessResult(Messages.HomeworkAdded);
         }
 
+        [ValidationAspect(typeof(HomeworkValidator))]
         public IResult Update(Homework homework)
         {
             _homeworkDal.Update(homework);

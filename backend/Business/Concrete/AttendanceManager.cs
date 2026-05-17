@@ -1,3 +1,5 @@
+using Core.Aspects.Autofac.Validation;
+using Business.ValidationRules.FluentValidation;
 using Business.Abstract;
 using Business.Constants;
 using Core.Utilities.Results;
@@ -30,12 +32,14 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Attendance>>(_attendanceDal.GetAll(a => a.AttendanceDate.Date == date.Date));
         }
 
+        [ValidationAspect(typeof(AttendanceValidator))]
         public IResult Add(Attendance attendance)
         {
             _attendanceDal.Add(attendance);
             return new SuccessResult(Messages.AttendanceAdded);
         }
 
+        [ValidationAspect(typeof(AttendanceValidator))]
         public IResult Update(Attendance attendance)
         {
             _attendanceDal.Update(attendance);

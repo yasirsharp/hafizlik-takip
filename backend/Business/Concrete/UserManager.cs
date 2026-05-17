@@ -1,3 +1,5 @@
+using Core.Aspects.Autofac.Validation;
+using Business.ValidationRules.FluentValidation;
 using Business.Abstract;
 using Core.Utilities.Security.Entities;
 using DataAccess.Abstract;

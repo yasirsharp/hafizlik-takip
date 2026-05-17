@@ -1,3 +1,5 @@
+using Core.Aspects.Autofac.Validation;
+using Business.ValidationRules.FluentValidation;
 using Business.Abstract;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -35,12 +37,14 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Student>>(students);
         }
 
+        [ValidationAspect(typeof(TeacherStudentAssignmentValidator))]
         public IResult Add(TeacherStudentAssignment assignment)
         {
             _assignmentDal.Add(assignment);
             return new SuccessResult("Ogrenci atamasi eklendi");
         }
 
+        [ValidationAspect(typeof(TeacherStudentAssignmentValidator))]
         public IResult Update(TeacherStudentAssignment assignment)
         {
             _assignmentDal.Update(assignment);

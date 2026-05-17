@@ -1,3 +1,5 @@
+using Core.Aspects.Autofac.Validation;
+using Business.ValidationRules.FluentValidation;
 using Business.Abstract;
 using Business.Constants;
 using Core.Utilities.Results;
@@ -30,12 +32,14 @@ namespace Business.Concrete
             return new SuccessDataResult<Lesson>(_lessonDal.Get(l => l.Id == id));
         }
 
+        [ValidationAspect(typeof(LessonValidator))]
         public IResult Add(Lesson lesson)
         {
             _lessonDal.Add(lesson);
             return new SuccessResult(Messages.LessonAdded);
         }
 
+        [ValidationAspect(typeof(LessonValidator))]
         public IResult Update(Lesson lesson)
         {
             _lessonDal.Update(lesson);

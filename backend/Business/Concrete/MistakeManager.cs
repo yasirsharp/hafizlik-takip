@@ -1,3 +1,5 @@
+using Core.Aspects.Autofac.Validation;
+using Business.ValidationRules.FluentValidation;
 using Business.Abstract;
 using Business.Constants;
 using Core.Utilities.Results;
@@ -25,6 +27,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Mistake>>(_mistakeDal.GetAll(m => m.LessonId == lessonId));
         }
 
+        [ValidationAspect(typeof(MistakeValidator))]
         public IResult Add(Mistake mistake)
         {
             _mistakeDal.Add(mistake);

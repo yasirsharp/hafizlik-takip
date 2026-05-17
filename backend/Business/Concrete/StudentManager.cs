@@ -1,3 +1,5 @@
+using Core.Aspects.Autofac.Validation;
+using Business.ValidationRules.FluentValidation;
 using Business.Abstract;
 using Business.Constants;
 using Core.Utilities.Results;
@@ -25,12 +27,14 @@ namespace Business.Concrete
             return new SuccessDataResult<Student>(_studentDal.Get(s => s.Id == id));
         }
 
+        [ValidationAspect(typeof(StudentValidator))]
         public IResult Add(Student student)
         {
             _studentDal.Add(student);
             return new SuccessResult(Messages.StudentAdded);
         }
 
+        [ValidationAspect(typeof(StudentValidator))]
         public IResult Update(Student student)
         {
             _studentDal.Update(student);
