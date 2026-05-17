@@ -40,6 +40,8 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<EfDutyScheduleWeekDal>().As<IDutyScheduleWeekDal>().SingleInstance();
             builder.RegisterType<EfDutyScheduleEntryDal>().As<IDutyScheduleEntryDal>().SingleInstance();
             builder.RegisterType<EfTeacherStudentAssignmentDal>().As<ITeacherStudentAssignmentDal>().SingleInstance();
+            builder.RegisterType<EfOperationClaimDal>().As<IOperationClaimDal>().SingleInstance();
+            builder.RegisterType<EfUserOperationClaimDal>().As<IUserOperationClaimDal>().SingleInstance();
 
             // JWT
             builder.RegisterType<JwtHelper>().As<ITokenHelper>().SingleInstance();

@@ -1,3 +1,4 @@
+using Business.BusinessAspects.Autofac;
 using Core.Aspects.Autofac.Validation;
 using Business.ValidationRules.FluentValidation;
 using Business.Abstract;
@@ -35,6 +36,7 @@ namespace Business.Concrete
             return new SuccessDataResult<DutyScheduleConstraint>(_constraintDal.Get(c => c.Id == id));
         }
 
+        [SecuredOperation("admin,yonetici")]
         [ValidationAspect(typeof(DutyScheduleConstraintValidator))]
         public IResult AddConstraint(DutyScheduleConstraint constraint)
         {
@@ -42,6 +44,7 @@ namespace Business.Concrete
             return new SuccessResult("Nobet kisitlari eklendi");
         }
 
+        [SecuredOperation("admin,yonetici")]
         [ValidationAspect(typeof(DutyScheduleConstraintValidator))]
         public IResult UpdateConstraint(DutyScheduleConstraint constraint)
         {

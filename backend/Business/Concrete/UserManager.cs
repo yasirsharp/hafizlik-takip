@@ -9,10 +9,14 @@ namespace Business.Concrete
     public class UserManager : IUserService
     {
         private IUserDal _userDal;
+        private IOperationClaimDal _operationClaimDal;
+        private IUserOperationClaimDal _userOperationClaimDal;
 
-        public UserManager(IUserDal userDal)
+        public UserManager(IUserDal userDal, IOperationClaimDal operationClaimDal, IUserOperationClaimDal userOperationClaimDal)
         {
             _userDal = userDal;
+            _operationClaimDal = operationClaimDal;
+            _userOperationClaimDal = userOperationClaimDal;
         }
 
         public List<OperationClaim> GetClaims(User user)
@@ -28,6 +32,19 @@ namespace Business.Concrete
         public User GetByMail(string email)
         {
             return _userDal.Get(u => u.Email == email);
+        }
+
+        public void AddClaim(User user, string claimName)
+        {
+            var claim = _operationClaimDal.Get(c => c.Name == claimName);
+            if (claim != null)
+            {
+                _userOperationClaimDal.Add(new UserOperationClaim
+                {
+                    UserId = user.Id,
+                    OperationClaimId = claim.Id
+                });
+            }
         }
     }
 }

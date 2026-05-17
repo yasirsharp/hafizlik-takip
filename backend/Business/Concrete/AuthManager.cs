@@ -32,9 +32,14 @@ namespace Business.Concrete
                 LastName = userForRegisterDto.LastName,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
-                Status = true
+                Status = true,
+                Role = "ogrenci"
             };
             _userService.Add(user);
+            
+            // Engin Demiroğ mimarisi rol atamasi
+            _userService.AddClaim(user, "ogrenci");
+            
             return new SuccessDataResult<User>(user, Messages.UserRegistered);
         }
 
