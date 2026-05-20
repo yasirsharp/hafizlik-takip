@@ -13,9 +13,9 @@ frontend/
 │   │   ├── api/              # Axios instance, interceptors, endpoint tanımları
 │   │   ├── components/       # Paylaşılan UI bileşenleri
 │   │   ├── screens/          # Ekranlar (her rol için alt klasör)
-│   │   ├── navigation/       # React Navigation yapılandırması
+│   │   ├── app/              # Expo Router dosya tabanlı navigasyon (Route'lar)
 │   │   ├── hooks/            # Custom hook'lar
-│   │   ├── context/          # React Context (Auth, Tenant, Theme)
+│   │   ├── store/            # Zustand State (AuthStore, TenantStore)
 │   │   ├── i18n/             # Çoklu dil dosyaları (tr, ar, en)
 │   │   ├── types/            # TypeScript tip tanımları (backend DTO'larla eş)
 │   │   ├── utils/            # Yardımcı fonksiyonlar
@@ -167,14 +167,15 @@ export const studentApi = {
 ### Mobil (React Native)
 
 ```
-AuthContext     → Kullanıcı, token, rol bilgisi
-TenantContext   → Aktif tenant bilgisi  
-ThemeContext    → Tema, dil ayarları
+useAuthStore    → Kullanıcı, token, rol bilgisi yönetimi (Zustand)
+useTenantStore  → Aktif tenant bilgisi yönetimi (Zustand)
+useThemeStore   → Tema ve UI state (Zustand)
 ```
 
-- Basit state: `useState` + `useContext`
-- API state: Custom hook'lar (`useStudents`, `useLessons`)
-- Karmaşıklaşırsa: Zustand veya React Query
+- **Global State:** Sadece Zustand kullanılır (Context API kullanılmaz).
+- **API State:** Axios + custom fetch hook'ları ile yönetilir.
+- **Routing/Navigation:** Expo Router (App Router) kullanılır.
+- **Styling (UI):** NativeWind (Tailwind CSS) kullanılır, StyleSheet sınırlı alanlarda tercih edilir.
 
 ### Web (Admin Panel)
 
@@ -209,8 +210,7 @@ ThemeContext    → Tema, dil ayarları
 
 ```
 StudentCard/
-├── StudentCard.tsx          # Component
-├── StudentCard.styles.ts    # StyleSheet (RN) veya .module.css (web)
+├── StudentCard.tsx          # Component (NativeWind className'leri ile)
 └── index.ts                 # export
 ```
 
@@ -281,5 +281,30 @@ const student: any = response.data;
 1. **Gereksiz re-render önle** → `React.memo`, `useMemo`, `useCallback`
 2. **Büyük listelerde** → `FlatList` (mobil) veya `virtualized list` (web)
 3. **Resimler** → Optimize edilmiş boyutlarda, lazy load
-4. **API çağrıları** → Debounce (arama), throttle (scroll)
 5. **Bundle size** → Kullanılmayan import'ları kaldır
+
+---
+
+## 11. Logging (Loglama) Kuralları
+
+Frontend projelerinde (Mobil ve Web) **kesinlikle doğrudan `console.log` KULLANILMAZ**. Her zaman `src/utils/logger.ts` üzerinden loglama yapılmalıdır.
+
+### Ortam Bazlı Loglama
+- **Development (`__DEV__`):** Tüm loglar (`DEBUG`, `INFO`, `WARN`, `ERROR`) console'a basılır.
+- **Test:** Genellikle sadece `WARN` ve `ERROR` seviyeleri aktiftir. Test console'unu temiz tutmak için kullanılır.
+- **Production:** Sadece `ERROR` seviyesi aktiftir. Hatalar ekranda gösterilmez, Sentry veya Crashlytics gibi remote hata takip araçlarına iletilir.
+
+### Kullanım Örnekleri
+```typescript
+import { logger } from '../utils/logger';
+
+// ❌ Yanlış
+console.log('User fetched', data);
+console.error('API Error', err);
+
+// ✅ Doğru
+logger.debug('User list retrieved successfully', { count: data.length });
+logger.info('User successfully logged in', { userId: user.id });
+logger.warn('Token is about to expire');
+logger.error('Failed to fetch students', err);
+```

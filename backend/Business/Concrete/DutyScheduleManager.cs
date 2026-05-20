@@ -66,7 +66,9 @@ namespace Business.Concrete
 
         public IResult GenerateWeek(int constraintId, DateTime weekStartDate, int createdByUserId)
         {
-            // TODO: Constraint-based otomatik cizelge algoritmasi burada implement edilecek
+            // TODO (ALGORITMA): Yonetici tarafindan secilen kisitlamalara (Constraint) ve haftalik 
+            // kurallara gore nobet tablosunu otomatik (random veya ardışıklık kısıtlarıyla) dolduracak 
+            // is mantigi buraya eklenecek. Ileride entegre edilecek.
             var week = new DutyScheduleWeek
             {
                 ConstraintId = constraintId,
